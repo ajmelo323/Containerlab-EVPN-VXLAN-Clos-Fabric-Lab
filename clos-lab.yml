@@ -1,0 +1,61 @@
+name: clos-lab
+
+topology:
+  nodes:
+    spine1:
+      kind: linux
+      image: frrouting/frr:latest
+      binds:
+        - spine1-frr.conf:/etc/frr/frr.conf
+        - spine1-daemons:/etc/frr/daemons
+
+    spine2:
+      kind: linux
+      image: frrouting/frr:latest
+      binds:
+        - spine2-frr.conf:/etc/frr/frr.conf
+        - spine2-daemons:/etc/frr/daemons
+
+    leaf1:
+      kind: linux
+      image: frrouting/frr:latest
+      binds:
+        - leaf1-frr.conf:/etc/frr/frr.conf
+        - leaf1-daemons:/etc/frr/daemons
+
+    leaf2:
+      kind: linux
+      image: frrouting/frr:latest
+      binds:
+        - leaf2-frr.conf:/etc/frr/frr.conf
+        - leaf2-daemons:/etc/frr/daemons
+
+    leaf3:
+      kind: linux
+      image: frrouting/frr:latest
+      binds:
+        - leaf3-frr.conf:/etc/frr/frr.conf
+        - leaf3-daemons:/etc/frr/daemons
+
+    host1:
+      kind: linux
+      image: alpine:latest
+
+    host2:
+      kind: linux
+      image: alpine:latest
+
+    host3:
+      kind: linux
+      image: alpine:latest
+
+  links:
+    - endpoints: ["leaf1:eth1", "spine1:eth1"]
+    - endpoints: ["leaf1:eth2", "spine2:eth1"]
+    - endpoints: ["leaf2:eth1", "spine1:eth2"]
+    - endpoints: ["leaf2:eth2", "spine2:eth2"]
+    - endpoints: ["leaf3:eth1", "spine1:eth3"]
+    - endpoints: ["leaf3:eth2", "spine2:eth3"]
+    - endpoints: ["leaf1:eth3", "host1:eth1"]
+    - endpoints: ["leaf2:eth3", "host2:eth1"]
+    - endpoints: ["leaf3:eth3", "host3:eth1"]
